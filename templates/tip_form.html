@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ "Edytuj wskazówkę" if tip else "Dodaj wskazówkę" }}
+{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container narrow">
+
+        <a class="back-link" href="{{ url_for('student_detail', student_id=student.id) }}">
+            ← Wróć do {{ student.name }}
+        </a>
+
+        <div class="panel">
+            <span class="eyebrow">{{ student.name }}</span>
+            <h1>{{ "Edytuj wskazówkę" if tip else "Dodaj wskazówkę" }}</h1>
+
+            <form method="post" class="form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                <label>
+                    Przedmiot
+                    <select name="subject" required>
+                        <option
+                            value="Matematyka"
+                            {% if tip and tip.subject == "Matematyka" %}selected{% endif %}
+                        >
+                            Matematyka
+                        </option>
+
+                        <option
+                            value="Geografia"
+                            {% if tip and tip.subject == "Geografia" %}selected{% endif %}
+                        >
+                            Geografia
+                        </option>
+                    </select>
+                </label>
+
+                <label>
+                    Tytuł
+                    <input
+                        type="text"
+                        name="title"
+                        required
+                        value="{{ tip.title if tip else '' }}"
+                    >
+                </label>
+
+                <label>
+                    Treść
+                    <textarea name="content" rows="8" required>{{ tip.content if tip else '' }}</textarea>
+                </label>
+
+                <button class="btn" type="submit">
+                    Zapisz wskazówkę
+                </button>
+
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Błąd {{ code }}{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container narrow">
+        <div class="empty-state">
+            <span class="error-code">{{ code }}</span>
+            <h1>Ups.</h1>
+            <p>{{ message }}</p>
+            <a class="btn" href="{{ url_for('index') }}">Wróć na start</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

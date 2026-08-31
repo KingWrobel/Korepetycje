@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ "Edytuj zadanie" if assignment else "Dodaj zadanie" }}
+{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container narrow">
+
+        <a
+            class="back-link"
+            href="{{ url_for('student_detail', student_id=student.id) }}"
+        >
+            ← Wróć do {{ student.name }}
+        </a>
+
+        <div class="panel">
+            <span class="eyebrow">{{ student.name }}</span>
+
+            <h1>
+                {{ "Edytuj zadanie" if assignment else "Dodaj zadanie" }}
+            </h1>
+
+            <form method="post" class="form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                <label>
+                    Przedmiot
+                    <select name="subject" required>
+                        <option
+                            value="Matematyka"
+                            {% if assignment and assignment.subject == "Matematyka" %}selected{% endif %}
+                        >
+                            Matematyka
+                        </option>
+
+                        <option
+                            value="Geografia"
+                            {% if assignment and assignment.subject == "Geografia" %}selected{% endif %}
+                        >
+                            Geografia
+                        </option>
+                    </select>
+                </label>
+
+                <label>
+                    Tytuł
+                    <input
+                        type="text"
+                        name="title"
+                        required
+                        value="{{ assignment.title if assignment else '' }}"
+                    >
+                </label>
+
+                <label>
+                    Opis
+                    <textarea name="description" rows="6">{{ assignment.description if assignment and assignment.description else '' }}</textarea>
+                </label>
+
+                <label>
+                    Termin
+                    <input
+                        type="date"
+                        name="due_date"
+                        value="{{ assignment.due_date.isoformat() if assignment and assignment.due_date else '' }}"
+                    >
+                </label>
+
+                <button class="btn" type="submit">
+                    Zapisz zadanie
+                </button>
+
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

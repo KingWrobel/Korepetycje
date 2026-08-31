@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% if mode == "add" %}
+    {% set title_text = "Dodaj ucznia" %}
+{% else %}
+    {% set title_text = "Edytuj ucznia" %}
+{% endif %}
+
+{% block title %}{{ title_text }}{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container narrow">
+        <div class="panel">
+            <span class="eyebrow">PANEL NAUCZYCIELA</span>
+            <h1>{{ title_text }}</h1>
+
+            <form method="post" class="form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <label>
+                    Imię i nazwisko
+                    <input
+                        type="text"
+                        name="name"
+                        required
+                        value="{{ student.name if student else '' }}"
+                    >
+                </label>
+
+                <label>
+                    E-mail
+                    <input
+                        type="email"
+                        name="email"
+                        required
+                        value="{{ student.email if student else '' }}"
+                    >
+                </label>
+
+                {% if mode == "add" %}
+                    <label>
+                        Hasło startowe
+                        <input
+                            type="password"
+                            name="password"
+                            required
+                            minlength="8"
+                        >
+                    </label>
+                {% endif %}
+
+                <button class="btn" type="submit">
+                    {{ "Utwórz konto" if mode == "add" else "Zapisz zmiany" }}
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

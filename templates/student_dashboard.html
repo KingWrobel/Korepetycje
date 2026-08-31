@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Panel ucznia{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+
+        <div class="dashboard-hero">
+            <div>
+                <span class="eyebrow">PANEL UCZNIA</span>
+                <h1>Cześć, {{ current_user.name }} 👋</h1>
+                <p class="muted">
+                    Zadania, materiały i komentarze nauczyciela są tutaj.
+                </p>
+            </div>
+
+            <div class="stats">
+                <div class="stat">
+                    <strong>
+                        {{
+                            assignments
+                            | selectattr("status", "equalto", "Do zrobienia")
+                            | list
+                            | length
+                        }}
+                    </strong>
+                    <span>do zrobienia</span>
+                </div>
+
+                <div class="stat">
+                    <strong>
+                        {{
+                            assignments
+                            | selectattr("status", "equalto", "Przesłane")
+                            | list
+                            | length
+                        }}
+                    </strong>
+                    <span>przesłanych</span>
+                </div>
+
+                <div class="stat">
+                    <strong>
+                        {{
+                            assignments
+                            | selectattr("status", "equalto", "Sprawdzone")
+                            | list
+                            | length
+                        }}
+                    </strong>
+                    <span>sprawdzonych</span>
+                </div>
+            </div>
+        </div>
+
+        {% set subject = "Matematyka" %}
+        {% set viewer = "student" %}
+        {% include "_subject_section.html" %}
+
+        {% set subject = "Geografia" %}
+        {% set viewer = "student" %}
+        {% include "_subject_section.html" %}
+
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,42 @@
+databases:
+  - name: jw-korepetycje-db
+    databaseName: korepetycje
+    user: korepetycje
+    plan: free
+    region: frankfurt
+
+services:
+  - type: web
+    name: jw-korepetycje
+    runtime: python
+    plan: free
+    region: frankfurt
+    buildCommand: pip install -r requirements.txt && flask --app app db upgrade
+    startCommand: python bootstrap_admin.py && gunicorn --workers 2 --threads 4 --timeout 120 app:app
+    healthCheckPath: /health
+    autoDeployTrigger: commit
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: jw-korepetycje-db
+          property: connectionString
+      - key: STORAGE_BACKEND
+        value: r2
+      - key: ADMIN_NAME
+        value: Jakub
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: R2_ACCOUNT_ID
+        sync: false
+      - key: R2_ACCESS_KEY_ID
+        sync: false
+      - key: R2_SECRET_ACCESS_KEY
+        sync: false
+      - key: R2_BUCKET_NAME
+        sync: false

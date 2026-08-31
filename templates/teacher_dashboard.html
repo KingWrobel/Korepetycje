@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Panel nauczyciela{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+
+        <div class="page-heading">
+            <div>
+                <span class="eyebrow">PANEL NAUCZYCIELA</span>
+                <h1>Twoi uczniowie</h1>
+                <p class="muted">
+                    Zarządzaj uczniami i sprawdzaj przesłane prace.
+                </p>
+            </div>
+
+            <a class="btn" href="{{ url_for('add_student') }}">+ Dodaj ucznia</a>
+        </div>
+
+        <div class="stats teacher-summary">
+            <div class="stat">
+                <strong>{{ active_students | length }}</strong>
+                <span>aktywnych uczniów</span>
+            </div>
+
+            <div class="stat stat-attention">
+                <strong>{{ waiting_review }}</strong>
+                <span>prac do sprawdzenia</span>
+            </div>
+
+            <div class="stat">
+                <strong>{{ overdue }}</strong>
+                <span>zadań po terminie</span>
+            </div>
+
+            <div class="stat">
+                <strong>{{ archived_students | length }}</strong>
+                <span>zarchiwizowanych</span>
+            </div>
+        </div>
+
+        <h2 class="section-title">Aktywni uczniowie</h2>
+
+        {% if active_students %}
+            <div class="student-list">
+                {% for student in active_students %}
+                    <a
+                        class="student-row"
+                        href="{{ url_for('student_detail', student_id=student.id) }}"
+                    >
+                        <div class="student-avatar">
+                            {{ student.name[:1] | upper }}
+                        </div>
+
+                        <div class="student-main">
+                            <strong>{{ student.name }}</strong>
+                            <span>{{ student.email }}</span>
+                        </div>
+
+                        <span class="student-open">Otwórz →</span>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <h3>Brak aktywnych uczniów.</h3>
+            </div>
+        {% endif %}
+
+        {% if archived_students %}
+            <details class="archive-box">
+                <summary>
+                    Zarchiwizowani uczniowie ({{ archived_students | length }})
+                </summary>
+
+                <div class="archive-list">
+                    {% for student in archived_students %}
+                        <div class="archive-row">
+                            <div>
+                                <strong>{{ student.name }}</strong>
+                                <span>{{ student.email }}</span>
+                            </div>
+
+                            <form
+                                method="post"
+                                action="{{ url_for('restore_student', student_id=student.id) }}"
+                            >
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button class="btn btn-small btn-outline" type="submit">
+                                    Przywróć
+                                </button>
+                            </form>
+                        </div>
+                    {% endfor %}
+                </div>
+            </details>
+        {% endif %}
+
+    </div>
+</section>
+{% endblock %}

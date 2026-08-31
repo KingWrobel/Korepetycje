@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ "Edytuj materiał" if material else "Dodaj materiał" }}
+{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container narrow">
+
+        <a class="back-link" href="{{ url_for('student_detail', student_id=student.id) }}">
+            ← Wróć do {{ student.name }}
+        </a>
+
+        <div class="panel">
+            <span class="eyebrow">{{ student.name }}</span>
+            <h1>{{ "Edytuj materiał" if material else "Dodaj materiał" }}</h1>
+
+            <form method="post" class="form" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                <label>
+                    Przedmiot
+                    <select name="subject" required>
+                        <option
+                            value="Matematyka"
+                            {% if material and material.subject == "Matematyka" %}selected{% endif %}
+                        >
+                            Matematyka
+                        </option>
+
+                        <option
+                            value="Geografia"
+                            {% if material and material.subject == "Geografia" %}selected{% endif %}
+                        >
+                            Geografia
+                        </option>
+                    </select>
+                </label>
+
+                <label>
+                    Tytuł
+                    <input
+                        type="text"
+                        name="title"
+                        required
+                        value="{{ material.title if material else '' }}"
+                    >
+                </label>
+
+                <label>
+                    Opis
+                    <textarea name="description" rows="5">{{ material.description if material and material.description else '' }}</textarea>
+                </label>
+
+                <label>
+                    {% if material %}
+                        Nowy plik (opcjonalnie)
+                    {% else %}
+                        Plik
+                    {% endif %}
+
+                    <input
+                        type="file"
+                        name="file"
+                        {% if not material %}required{% endif %}
+                    >
+
+                    {% if material %}
+                        <small>Obecny plik: {{ material.original_filename }}</small>
+                    {% endif %}
+                </label>
+
+                <button class="btn" type="submit">
+                    Zapisz materiał
+                </button>
+
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

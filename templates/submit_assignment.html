@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Oddaj pracę{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container narrow">
+
+        <a class="back-link" href="{{ url_for('student_dashboard') }}">
+            ← Wróć do panelu
+        </a>
+
+        <div class="panel">
+            <span class="eyebrow">{{ assignment.subject }}</span>
+            <h1>Oddaj pracę</h1>
+
+            <div class="task-summary">
+                <strong>{{ assignment.title }}</strong>
+
+                {% if assignment.description %}
+                    <p>{{ assignment.description }}</p>
+                {% endif %}
+
+                {% if assignment.due_date %}
+                    <span class="meta">
+                        Termin: {{ assignment.due_date.strftime("%d.%m.%Y") }}
+                    </span>
+                {% endif %}
+            </div>
+
+            <form method="post" class="form" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                <label>
+                    Odpowiedź / komentarz
+                    <textarea
+                        name="answer_text"
+                        rows="7"
+                        placeholder="Możesz wpisać rozwiązanie, opis albo wiadomość do nauczyciela."
+                    >{{ assignment.submission.answer_text if assignment.submission and assignment.submission.answer_text else '' }}</textarea>
+                </label>
+
+                <label>
+                    Załącz plik
+                    <input type="file" name="file">
+
+                    {% if assignment.submission and assignment.submission.original_filename %}
+                        <small>
+                            Obecny plik:
+                            {{ assignment.submission.original_filename }}
+                        </small>
+                    {% endif %}
+                </label>
+
+                <button class="btn" type="submit">
+                    Prześlij do sprawdzenia
+                </button>
+
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

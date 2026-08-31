@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Korepetycje z matematyki i geografii{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container hero-grid">
+        <div>
+            <span class="eyebrow">MATEMATYKA · GEOGRAFIA</span>
+            <h1>Nauka, zadania i materiały w jednym miejscu.</h1>
+            <p class="lead">
+                Prywatny panel ucznia z zadaniami domowymi, materiałami,
+                wskazówkami, filmami i możliwością oddawania prac.
+            </p>
+
+            <div class="actions">
+                <a class="btn" href="{{ url_for('login') }}">Przejdź do panelu</a>
+                <a class="btn btn-outline" href="#funkcje">Jak to działa?</a>
+            </div>
+        </div>
+
+        <div class="hero-card">
+            <div class="subject-card">
+                <span class="subject-icon">📐</span>
+                <div>
+                    <strong>Matematyka</strong>
+                    <p>Zadania, materiały, rozwiązania.</p>
+                </div>
+            </div>
+
+            <div class="subject-card">
+                <span class="subject-icon">🌍</span>
+                <div>
+                    <strong>Geografia</strong>
+                    <p>Notatki, mapy, zadania i filmy.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="funkcje" class="section">
+    <div class="container">
+        <span class="eyebrow">PLATFORMA UCZNIA</span>
+        <h2>Od zadania do sprawdzenia</h2>
+
+        <div class="cards">
+            <article class="card">
+                <div class="feature-icon">📝</div>
+                <h3>1. Zadanie</h3>
+                <p>Nauczyciel dodaje zadanie i termin wykonania.</p>
+            </article>
+
+            <article class="card">
+                <div class="feature-icon">📤</div>
+                <h3>2. Oddanie pracy</h3>
+                <p>Uczeń wysyła plik lub wpisuje odpowiedź tekstową.</p>
+            </article>
+
+            <article class="card">
+                <div class="feature-icon">✅</div>
+                <h3>3. Sprawdzenie</h3>
+                <p>Nauczyciel dodaje komentarz i oznacza pracę jako sprawdzoną.</p>
+            </article>
+        </div>
+    </div>
+</section>
+{% endblock %}

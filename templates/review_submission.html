@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Sprawdź pracę{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container narrow">
+
+        <a
+            class="back-link"
+            href="{{ url_for('student_detail', student_id=assignment.student_id) }}"
+        >
+            ← Wróć do ucznia
+        </a>
+
+        <div class="panel">
+            <span class="eyebrow">{{ assignment.student.name }}</span>
+            <h1>Sprawdź pracę</h1>
+
+            <div class="task-summary">
+                <strong>{{ assignment.title }}</strong>
+                <p>{{ assignment.description or "Brak dodatkowego opisu." }}</p>
+
+                <span class="meta">
+                    Przesłano:
+                    {{ submission.submitted_at.strftime("%d.%m.%Y %H:%M") }}
+                </span>
+            </div>
+
+            <div class="submitted-answer">
+                <h3>Odpowiedź ucznia</h3>
+
+                {% if submission.answer_text %}
+                    <p class="preline">{{ submission.answer_text }}</p>
+                {% else %}
+                    <p class="muted">Brak odpowiedzi tekstowej.</p>
+                {% endif %}
+
+                {% if submission.original_filename %}
+                    <a
+                        class="btn btn-small"
+                        href="{{ url_for('download_submission', submission_id=submission.id) }}"
+                    >
+                        Pobierz: {{ submission.original_filename }}
+                    </a>
+                {% endif %}
+            </div>
+
+            <form method="post" class="form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <label>
+                    Komentarz dla ucznia
+                    <textarea
+                        name="teacher_comment"
+                        rows="8"
+                        placeholder="Napisz, co zostało zrobione dobrze i co warto poprawić."
+                    >{{ submission.teacher_comment or '' }}</textarea>
+                </label>
+
+                <div class="form-actions">
+                    <button
+                        class="btn btn-outline"
+                        type="submit"
+                        name="action"
+                        value="save"
+                    >
+                        Zapisz komentarz
+                    </button>
+
+                    <button
+                        class="btn"
+                        type="submit"
+                        name="action"
+                        value="checked"
+                    >
+                        Oznacz jako sprawdzone
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
