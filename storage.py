@@ -44,9 +44,15 @@ class StorageManager:
                 "Brakuje zmiennych Cloudflare R2: " + ", ".join(missing)
             )
 
+        # Ten bucket ma jurysdykcję EU, więc Cloudflare wymaga
+        # jurysdykcyjnego endpointu S3 z ".eu.".
+        endpoint_url = (
+            f"https://{account_id}.eu.r2.cloudflarestorage.com"
+        )
+
         self._client = boto3.client(
             "s3",
-            endpoint_url=f"https://{account_id}.r2.cloudflarestorage.com",
+            endpoint_url=endpoint_url,
             aws_access_key_id=access_key,
             aws_secret_access_key=secret_key,
             region_name="auto",
