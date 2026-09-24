@@ -2,14 +2,15 @@ databases:
   - name: jw-korepetycje-db
     databaseName: korepetycje
     user: korepetycje
-    plan: free
+    plan: 0.1c-256mb
+    diskSizeGB: 1
     region: frankfurt
 
 services:
   - type: web
     name: jw-korepetycje
     runtime: python
-    plan: free
+    plan: 0.5c-512mb
     region: frankfurt
     buildCommand: pip install -r requirements.txt && flask --app app db upgrade
     startCommand: python bootstrap_admin.py && gunicorn --workers 2 --threads 4 --timeout 120 app:app
